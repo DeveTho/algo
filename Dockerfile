@@ -22,6 +22,11 @@ RUN python3 -m pip --no-cache-dir install -U pip && \
 COPY . .
 RUN chmod 0755 /algo/algo-docker.sh
 
+# NOTE [Thomas, 20241226] Install uamqp from source, necessary for the Azure requirements from Ansible
+# See also https://forum.ansible.com/t/not-able-to-install-azcollection-requirements-azure-txt/5138/5
+RUN apk --no-cache add python3 py-pip python3-dev cmake gcc g++ openssl-dev build-base
+RUN pip3 install uamqp --no-binary :all:
+
 # Because of the bind mounting of `configs/`, we need to run as the `root` user
 # This may break in cases where user namespacing is enabled, so hopefully Docker
 # sorts out a way to set permissions on bind-mounted volumes (`docker run -v`)
