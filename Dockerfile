@@ -1,4 +1,9 @@
-FROM python:3.11-alpine
+# NOTE [Thomas, 20241226] Pin the version of Alpine to 3.20.
+# Newer versions of Alpine use CMake 3.31 or higher, which adds a deprecation warning
+# when CMake versions below 3.10 are used. This will fail the uamqp installation,
+# because azure-uamqp-c has CMake version 3.5 specified in its CMakeLists.txt.
+# See https://github.com/Azure/azure-uamqp-c/blob/96d7179f60e558b2c350194ea0061c725377f7e0/CMakeLists.txt#L4
+FROM python:3.11-alpine3.20
 
 ARG VERSION="git"
 ARG PACKAGES="bash libffi openssh-client openssl rsync tini gcc libffi-dev linux-headers make musl-dev openssl-dev rust cargo"
